@@ -179,10 +179,19 @@
     face.textContent=face.dataset.initials;
     if(portrait) portrait.textContent=portrait.dataset.initials;
   }
+  /* Photo search order: the <img> already written in the page, then common names in assets/ and media/ */
+  const staticImg = portrait && portrait.querySelector('img');
+  const STATIC_SRC = staticImg ? staticImg.getAttribute('src') : null;
+  const PHOTO_NAMES = [...(STATIC_SRC?[STATIC_SRC]:[]),
+    ...['assets','media'].flatMap(d=>['pema','Pema','profile','Profile','photo','me'].flatMap(n=>['jpg','jpeg','png','webp'].map(e=>d+'/'+n+'.'+e)))];
+  function findPhoto(i=0){
+    if(i>=PHOTO_NAMES.length){ showInitials(); return; }
+    const probe=new Image(); probe.onload=()=>showPhoto(PHOTO_NAMES[i]); probe.onerror=()=>findPhoto(i+1); probe.src=PHOTO_NAMES[i];
+  }
   function loadPhoto(){
     const saved=store.get('photo');
     if(saved){ showPhoto(saved); return; }
-    const probe=new Image(); probe.onload=()=>showPhoto(DEFAULT_PHOTO); probe.onerror=showInitials; probe.src=DEFAULT_PHOTO;
+    findPhoto();
   }
   $('#photo-file')?.addEventListener('change',e=>{
     const f=e.target.files[0]; if(!f) return;
