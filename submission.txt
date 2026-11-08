@@ -1,0 +1,6 @@
+Assignment: Personal Portfolio Website Design and Development
+Name: Pema Wangda
+
+GitHub repository link: https://github.com/yourusername/portfolio
+Deployed website link:  https://yourusername.github.io/portfolio/
+(or your Vercel link, e.g. https://portfolio-yourname.vercel.app)
